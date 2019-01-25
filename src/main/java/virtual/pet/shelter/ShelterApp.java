@@ -1,5 +1,6 @@
 package virtual.pet.shelter;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ShelterApp {
@@ -33,14 +34,14 @@ public class ShelterApp {
 			System.out.println("E\t|" + myShelter.getName(cageE) + "\t|" + myShelter.getHunger(cageE) + "\t\t|"
 					+ myShelter.getThirst(cageE) + "\t\t|" + myShelter.getBoredom(cageE));
 			System.out.println("\nWhat would you like to do?");
-			System.out.println("1. [Adopt]out a pet");
-			System.out.println("2. New pet [intake]");
-			System.out.println("3. [Move] a pet to a different cage");
-			System.out.println("4. [Feed] all the pets");
-			System.out.println("5. [Water] all the pets");
-			System.out.println("6. [Play] with a pet");
-			System.out.println("7. [Clean] a cage");
-			System.out.println("8. [Quit]");
+			System.out.println("[1]. [Adopt]out a pet");
+			System.out.println("[2]. New pet [intake]");
+			System.out.println("[3]. [Move] a pet to a different cage");
+			System.out.println("[4]. [Feed] all the pets");
+			System.out.println("[5]. [Water] all the pets");
+			System.out.println("[6]. [Play] with a pet");
+			System.out.println("[7]. [Clean] a cage");
+			System.out.println("[8]. [Quit]");
 			boolean exitMenu = false;
 			menuChoice = input.nextLine();
 
@@ -196,19 +197,19 @@ public class ShelterApp {
 						}
 						menuChoice = input.nextLine();
 						exitMenu = false;
-						if (menuChoice.equalsIgnoreCase("A")) {
+						if (menuChoice.equalsIgnoreCase("A") && myShelter.getPet(cageA) == null) {
 							myShelter.moveCage(oldCage, cageA);
 							exitMenu = true;
-						} else if (menuChoice.equalsIgnoreCase("B")) {
+						} else if (menuChoice.equalsIgnoreCase("B") && myShelter.getPet(cageB) == null) {
 							myShelter.moveCage(oldCage, cageB);
 							exitMenu = true;
-						} else if (menuChoice.equalsIgnoreCase("C")) {
+						} else if (menuChoice.equalsIgnoreCase("C") && myShelter.getPet(cageC) == null) {
 							myShelter.moveCage(oldCage, cageC);
 							exitMenu = true;
-						} else if (menuChoice.equalsIgnoreCase("D")) {
+						} else if (menuChoice.equalsIgnoreCase("D") && myShelter.getPet(cageD) == null) {
 							myShelter.moveCage(oldCage, cageD);
 							exitMenu = true;
-						} else if (menuChoice.equalsIgnoreCase("E")) {
+						} else if (menuChoice.equalsIgnoreCase("E") && myShelter.getPet(cageE) == null) {
 							myShelter.moveCage(oldCage, cageE);
 							exitMenu = true;
 						}
@@ -217,6 +218,65 @@ public class ShelterApp {
 
 				}
 			}
+			if (menuChoice.equals("4") || menuChoice.equalsIgnoreCase("feed")) {
+				myShelter.feedAll();
+				System.out.println("You feed all the pets in the shelter.");
+			}
+			if (menuChoice.contentEquals("5") || menuChoice.equalsIgnoreCase("water")) {
+				myShelter.waterAll();
+				System.out.println("You water all the pets in the shelter.");
+			}
+			if (menuChoice.contentEquals("6") || menuChoice.equalsIgnoreCase("play")) {
+				ArrayList<Pet> petList = myShelter.petList();
+				if (petList.size() == 0) {
+					System.out.println("There are no pets to play with.");
+					exitMenu = true;
+				} else {
+					do {
+						System.out.println("Which pet would you like to play with?");
+						for (Pet aPet : petList) {
+							System.out.println("[" + aPet.getName().trim() + "] " + aPet.getDescription());
+						}
+						menuChoice = input.nextLine();
+						for (Pet aPet : petList) {
+							if (aPet.getName().trim().equalsIgnoreCase(menuChoice)) {
+								System.out.println(aPet.getName() + aPet.play());
+								exitMenu = true;
+							}
+						}
+					} while (!exitMenu);
+				}
+			}
+			if (menuChoice.equals("7") || menuChoice.equalsIgnoreCase("clean")) {
+				do {
+					System.out.println("Which cage would you like to clean?");
+					System.out.println("Cage:\t|Dirtiness:\t|Pet:");
+					System.out.println("----------------------------------");
+					System.out.println("[A]\t|" + cageA.getDirty() + "\t\t|" + myShelter.getName(cageA));
+					System.out.println("[B]\t|" + cageB.getDirty() + "\t\t|" + myShelter.getName(cageB));
+					System.out.println("[C]\t|" + cageC.getDirty() + "\t\t|" + myShelter.getName(cageC));
+					System.out.println("[D]\t|" + cageD.getDirty() + "\t\t|" + myShelter.getName(cageD));
+					System.out.println("[E]\t|" + cageE.getDirty() + "\t\t|" + myShelter.getName(cageE));
+					menuChoice = input.nextLine();
+					if (menuChoice.equalsIgnoreCase("A")) {
+						System.out.println(cageA.clean(myShelter.getPet(cageA) != null));
+						exitMenu = true;
+					} else if (menuChoice.equalsIgnoreCase("B")) {
+						System.out.println(cageB.clean(myShelter.getPet(cageB) != null));
+						exitMenu = true;
+					} else if (menuChoice.equalsIgnoreCase("C")) {
+						System.out.println(cageC.clean(myShelter.getPet(cageC) != null));
+						exitMenu = true;
+					} else if (menuChoice.equalsIgnoreCase("D")) {
+						System.out.println(cageD.clean(myShelter.getPet(cageD) != null));
+						exitMenu = true;
+					} else if (menuChoice.equalsIgnoreCase("E")) {
+						System.out.println(cageE.clean(myShelter.getPet(cageE) != null));
+						exitMenu = true;
+					}
+				} while (!exitMenu);
+			}
+
 		} while (!menuChoice.equals("8") && !menuChoice.equalsIgnoreCase("quit"));
 		System.out.println("Goodbye.");
 		input.close();

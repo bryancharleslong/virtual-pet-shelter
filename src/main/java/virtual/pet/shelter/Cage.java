@@ -19,12 +19,11 @@ public class Cage {
 	public String clean(boolean isOccupied) {
 		String cleanMessage = "error";
 		if (isOccupied) {
-			if (dirty <= 12) {
-				dirty = 0;
-			} else {
-				dirty -= 12;
+			dirty-=23;
+			if(dirty<=10) {
+				dirty = 10;
 			}
-			cleanMessage = "There is only so much you can clean an occupied cage.";
+			cleanMessage = "The cage looks cleaner, but there is only \nso much you can do with an occupied cage.";
 		} else {
 			dirty = 0;
 			cleanMessage = "You thouroughly clean the empty cage.";

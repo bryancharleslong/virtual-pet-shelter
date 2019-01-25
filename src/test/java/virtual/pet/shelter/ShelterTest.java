@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 public class ShelterTest {
@@ -167,9 +169,9 @@ public class ShelterTest {
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 50, 15);
 		shelterUnderTest.intake(cageC, "namec", "descriptionc", 16, 17, 18);
 		shelterUnderTest.feedAll();
-		assertEquals(70,shelterUnderTest.getPet(cageA).getHunger());
-		assertEquals(3,shelterUnderTest.getPet(cageB).getHunger());
-		assertEquals(6,shelterUnderTest.getPet(cageC).getHunger());
+		assertEquals("70",shelterUnderTest.getHunger(cageA));
+		assertEquals("3",shelterUnderTest.getHunger(cageB));
+		assertEquals("6",shelterUnderTest.getHunger(cageC));
 	}
 	
 	@Test
@@ -184,21 +186,21 @@ public class ShelterTest {
 	}
 	
 	@Test
-	public void playWillDecreaseBoredomBy8IfNotHungryOrThirsty() {
+	public void playWillDecreaseBoredomBy12IfNotHungryOrThirsty() {
 		shelterUnderTest.intake(cageC, "namec", "descriptionc", 16, 17, 18);
-		String testMessage = shelterUnderTest.play(cageC);
-		assertEquals(10,shelterUnderTest.getPet(cageC).getBoredom());
+		String testMessage = shelterUnderTest.getPet(cageC).play();
+		assertEquals(6,shelterUnderTest.getPet(cageC).getBoredom());
 		assertTrue(testMessage.contains("great time"));
 	}
 	
 	@Test
-	public void playWillDecreaseBoredomBy4IfHungryOrThirsty() {
+	public void playWillDecreaseBoredomBy6IfHungryOrThirsty() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 55, 10, 20);
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 50, 15);
-		shelterUnderTest.play(cageA);
-		String testMessage = shelterUnderTest.play(cageB);
-		assertEquals(16,shelterUnderTest.getPet(cageA).getBoredom());
-		assertEquals(11,shelterUnderTest.getPet(cageB).getBoredom());
+		shelterUnderTest.getPet(cageA).play();
+		String testMessage = shelterUnderTest.getPet(cageB).play();
+		assertEquals(14,shelterUnderTest.getPet(cageA).getBoredom());
+		assertEquals(9,shelterUnderTest.getPet(cageB).getBoredom());
 		assertTrue(testMessage.contains("distracted"));
 	}
 	
@@ -206,8 +208,8 @@ public class ShelterTest {
 	public void playWillDecreaseBoredomby0IfVeryHungryOrThirsty() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 75, 10, 20);
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 80, 15);
-		shelterUnderTest.play(cageA);
-		String testMessage = shelterUnderTest.play(cageB);
+		shelterUnderTest.getPet(cageA).play();
+		String testMessage = shelterUnderTest.getPet(cageB).play();
 		assertEquals(20,shelterUnderTest.getPet(cageA).getBoredom());
 		assertEquals(15,shelterUnderTest.getPet(cageB).getBoredom());
 		assertTrue(testMessage.contains("bite"));
@@ -222,18 +224,38 @@ public class ShelterTest {
 	}
 	
 	@Test
-	public void cleaningOccupiedCageDecreasesDirtyBy12() {
+	public void cleaningOccupiedCageDecreasesDirtyBy23() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 75, 10, 20);
 		String testMessage = shelterUnderTest.clean(cageA);
-		assertEquals(68,shelterUnderTest.getDirty(cageA));
+		assertEquals(57,shelterUnderTest.getDirty(cageA));
 		assertTrue(testMessage.contains("occupied cage"));
 	}
 	
 	@Test
-	public void cleaningOccupiedCageDecreasesDirtyBy12ToMinimum0() {
+	public void cleaningOccupiedCageDecreasesDirtyBy23ToMinimum10() {
 		shelterUnderTest.intake(cageC, "namec", "descriptionc", 75, 10, 20);
 		String testMessage = shelterUnderTest.clean(cageC);
-		assertEquals(0,shelterUnderTest.getDirty(cageC));
+		assertEquals(10,shelterUnderTest.getDirty(cageC));
 		assertTrue(testMessage.contains("occupied cage"));
+	}
+	
+	@Test
+	public void getPetReturnsPetObjectGivenPetName() {
+		shelterUnderTest.intake(cageA, "namea", "descriptiona", 75, 10, 20);
+		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 80, 15);
+		Pet testPet = shelterUnderTest.getPet("namea");
+		assertEquals(shelterUnderTest.getPet(cageA),testPet);
+	}
+	
+	@Test
+	public void petListReturnsArrayListOfPets() {
+		shelterUnderTest.intake(cageA, "namea", "descriptiona", 75, 10, 20);
+		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 80, 15);
+		ArrayList<Pet> testList = new ArrayList<>();
+		testList = shelterUnderTest.petList();
+		ArrayList<Pet> petList = new ArrayList<>();
+		petList.add(shelterUnderTest.getPet(cageB));
+		petList.add(shelterUnderTest.getPet(cageA));
+		assertEquals(petList,testList);
 	}
 }

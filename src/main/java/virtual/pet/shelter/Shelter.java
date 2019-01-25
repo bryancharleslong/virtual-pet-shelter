@@ -1,5 +1,6 @@
 package virtual.pet.shelter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -7,6 +8,15 @@ public class Shelter {
 
 	public Pet getPet(Cage aCage) {
 		return shelterMap.get(aCage);
+	}
+
+	public Pet getPet(String petName) {
+		Pet returnPet = null;
+		for(Pet aPet:shelterMap.values()) {
+			if(aPet.getName().equalsIgnoreCase(petName)) {
+				returnPet = aPet;
+			}
+		}return returnPet;
 	}
 
 	public Cage getCage(String petName) {
@@ -65,6 +75,16 @@ public class Shelter {
 
 	HashMap<Cage, Pet> shelterMap = new HashMap<>();
 
+	public ArrayList<Pet> petList() {
+		ArrayList<Pet> petList = new ArrayList<>();
+		for(Pet aPet:shelterMap.values()) {
+			if(aPet!=null){
+				petList.add(aPet);
+			}
+		}
+		return petList;
+	}
+
 	public void intake(Cage aCage, String name, String description, int hunger, int thirst, int boredom) {
 		// check for duplicate names
 		Pet intakePet = new Pet(name, description, hunger, thirst, boredom);
@@ -106,11 +126,6 @@ public class Shelter {
 				aPet.water();
 			}
 		}
-	}
-
-	public String play(Cage aCage) {
-		String playMessage = shelterMap.get(aCage).play();
-		return playMessage;
 	}
 
 	public String clean(Cage aCage) {

@@ -59,11 +59,19 @@ public class Pet {
 	}
 
 	public void feed() {
-		hunger -= 10;
+		if (hunger <= 10) {
+			hunger = 0;
+		} else {
+			hunger -= 10;
+		}
 	}
 
 	public void water() {
-		thirst -= 10;
+		if (thirst <= 10) {
+			thirst = 0;
+		} else {
+			thirst -= 10;
+		}
 	}
 
 	public String play() {
@@ -72,10 +80,10 @@ public class Pet {
 			boredom -= 0;
 			playMessage = " tried to bite you!";
 		} else if (hunger >= 40 || thirst >= 40) {
-			boredom -= 4;
+			boredom -= 6;
 			playMessage = " played with you but seemed distracted.";
 		} else {
-			boredom -= 8;
+			boredom -= 12;
 			playMessage = " had a great time!";
 		}
 		return playMessage;
