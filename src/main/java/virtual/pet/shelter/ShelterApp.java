@@ -7,13 +7,13 @@ public class ShelterApp {
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to the Pet Shelter!");
-		System.out.println("This is a small shleter with only five cages.");
+		System.out.println("This is a small sheleter with only five cages.");
 		Shelter myShelter = new Shelter();
 		Cage cageA = new Cage(20);
 		Cage cageB = new Cage(10);
 		Cage cageC = new Cage(15);
 		Cage cageD = new Cage(10);
-		Cage cageE = new Cage(30);
+		Cage cageE = new Cage(0);
 		myShelter.intake(cageA, "PuppyCat", "", 20, 10, 10);
 		myShelter.intake(cageB, "Rover   ", "", 12, 26, 18);
 		Scanner input = new Scanner(System.in);
@@ -48,11 +48,21 @@ public class ShelterApp {
 			if (menuChoice.equals("1") || menuChoice.equalsIgnoreCase("adopt")) {
 				do {
 					System.out.println("Which pet would you like to adopt?");
-					System.out.println("Cage [A]: [" + myShelter.getName(cageA).trim() + "]");
-					System.out.println("Cage [B]: [" + myShelter.getName(cageB).trim() + "]");
-					System.out.println("Cage [C]: [" + myShelter.getName(cageC).trim() + "]");
-					System.out.println("Cage [D]: [" + myShelter.getName(cageD).trim() + "]");
-					System.out.println("Cage [E]: [" + myShelter.getName(cageE).trim() + "]");
+					if (myShelter.getPet(cageA) != null) {
+						System.out.println("Cage [A]: [" + myShelter.getName(cageA).trim() + "]");
+					}
+					if (myShelter.getPet(cageB) != null) {
+						System.out.println("Cage [B]: [" + myShelter.getName(cageB).trim() + "]");
+					}
+					if (myShelter.getPet(cageC) != null) {
+						System.out.println("Cage [C]: [" + myShelter.getName(cageC).trim() + "]");
+					}
+					if (myShelter.getPet(cageC) != null) {
+						System.out.println("Cage [D]: [" + myShelter.getName(cageD).trim() + "]");
+					}
+					if (myShelter.getPet(cageE) != null) {
+						System.out.println("Cage [E]: [" + myShelter.getName(cageE).trim() + "]");
+					}
 					menuChoice = input.nextLine();
 					if (menuChoice.equalsIgnoreCase("A")
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageA).trim())) {
@@ -77,6 +87,7 @@ public class ShelterApp {
 					}
 				} while (!exitMenu);
 			}
+
 			if (menuChoice.equals("2") || menuChoice.equalsIgnoreCase("intake")) {
 				Cage intakeCage = null;
 				if (myShelter.getName(cageA).trim().equals("empty")) {
@@ -93,42 +104,56 @@ public class ShelterApp {
 					System.out.println("All cages are full");
 					exitMenu = true;
 				}
-				String intakeName = null;
 				if (!exitMenu) {
-					boolean nameMenu = false;
-					do {
+					String intakeName = null;
+					while (!exitMenu) {
+						exitMenu = false;
 						System.out.println("What is the name of the pet?");
 						intakeName = input.nextLine();
 						if (intakeName.length() >= 15) {
 							System.out.println("Pet name should be fourteen characters or less.");
+						} else if (intakeName.length() <= 1) {
+							System.out.println("Pet name should be at least two characters.");
+						} else if (intakeName.trim().equalsIgnoreCase(myShelter.getName(cageA).trim())
+								|| intakeName.trim().equalsIgnoreCase(myShelter.getName(cageB).trim())
+								|| intakeName.trim().equalsIgnoreCase(myShelter.getName(cageC).trim())
+								|| intakeName.trim().equalsIgnoreCase(myShelter.getName(cageD).trim())
+								|| intakeName.trim().equalsIgnoreCase(myShelter.getName(cageE).trim())) {
+							System.out.println("Choose a pet name not already used.");
 						} else {
+							// extra spaces stored in name for menu formatting
+							// trim() is used when retrieving names
 							while (intakeName.length() <= 6) {
 								intakeName = intakeName + " ";
 							}
-							nameMenu = true;
+							exitMenu = true;
 						}
-					} while (!nameMenu);
-				}
-				while (!exitMenu) {
-					System.out.println("Does the pet look healthy? (y/n)");
-					String intakeHealth = input.nextLine();
-					int intakeHunger = 0;
-					int intakeThirst = 0;
-					int intakeBoredom = 0;
-					if (intakeHealth.equalsIgnoreCase("Y")) {
-						intakeHunger = 20;
-						intakeThirst = 20;
-						intakeBoredom = 10;
-						exitMenu = true;
-					} else if (intakeHealth.equalsIgnoreCase("N")) {
-						intakeHunger = 60;
-						intakeThirst = 60;
-						intakeBoredom = 50;
-						exitMenu = true;
 					}
-					myShelter.intake(intakeCage, intakeName, "", intakeHunger, intakeThirst, intakeBoredom);
+					exitMenu = false;
+					while (!exitMenu) {
+						System.out.println("Does the pet look healthy? ([y]/[n])");
+						String intakeHealth = input.nextLine();
+						int intakeHunger = 0;
+						int intakeThirst = 0;
+						int intakeBoredom = 0;
+						if (intakeHealth.equalsIgnoreCase("Y")) {
+							intakeHunger = 20;
+							intakeThirst = 20;
+							intakeBoredom = 10;
+							exitMenu = true;
+						} else if (intakeHealth.equalsIgnoreCase("N")) {
+							intakeHunger = 60;
+							intakeThirst = 60;
+							intakeBoredom = 50;
+							exitMenu = true;
+						} else {
+							System.out.println("Please enter [y] or [n]");
+						}
+						myShelter.intake(intakeCage, intakeName, "", intakeHunger, intakeThirst, intakeBoredom);
+					}
 				}
 			}
+
 			if (menuChoice.equals("3") || menuChoice.equalsIgnoreCase("move")) {
 				Cage oldCage = null;
 				do {
@@ -218,14 +243,17 @@ public class ShelterApp {
 
 				}
 			}
+
 			if (menuChoice.equals("4") || menuChoice.equalsIgnoreCase("feed")) {
 				myShelter.feedAll();
 				System.out.println("You feed all the pets in the shelter.");
 			}
+
 			if (menuChoice.contentEquals("5") || menuChoice.equalsIgnoreCase("water")) {
 				myShelter.waterAll();
 				System.out.println("You water all the pets in the shelter.");
 			}
+
 			if (menuChoice.contentEquals("6") || menuChoice.equalsIgnoreCase("play")) {
 				ArrayList<Pet> petList = myShelter.petList();
 				if (petList.size() == 0) {
@@ -238,14 +266,16 @@ public class ShelterApp {
 							System.out.println("[" + aPet.getName().trim() + "] " + aPet.getDescription());
 						}
 						menuChoice = input.nextLine();
-						for (Pet aPet : petList) {
-							if (aPet.getName().trim().equalsIgnoreCase(menuChoice)) {
-								System.out.println(aPet.getName() + aPet.play());
-								exitMenu = true;
-							}
+
+						if (myShelter.getPet(menuChoice) != null) {
+							System.out.println(
+									myShelter.getPet(menuChoice).getName().trim() + myShelter.getPet(menuChoice).play());
+							exitMenu = true;
 						}
+
 					} while (!exitMenu);
 				}
+
 			}
 			if (menuChoice.equals("7") || menuChoice.equalsIgnoreCase("clean")) {
 				do {
@@ -280,6 +310,5 @@ public class ShelterApp {
 		} while (!menuChoice.equals("8") && !menuChoice.equalsIgnoreCase("quit"));
 		System.out.println("Goodbye.");
 		input.close();
-
 	}
 }

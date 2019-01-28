@@ -13,7 +13,7 @@ public class Shelter {
 	public Pet getPet(String petName) {
 		Pet returnPet = null;
 		for(Pet aPet:shelterMap.values()) {
-			if(aPet.getName().equalsIgnoreCase(petName)) {
+			if(aPet.getName().trim().equalsIgnoreCase(petName)) {
 				returnPet = aPet;
 			}
 		}return returnPet;
@@ -22,7 +22,7 @@ public class Shelter {
 	public Cage getCage(String petName) {
 		Cage aCage = null;
 		for (Entry<Cage, Pet> entry : shelterMap.entrySet()) {
-			if (entry.getValue().getName().equalsIgnoreCase(petName)) {
+			if (entry.getValue().getName().trim().equalsIgnoreCase(petName)) {
 				aCage = entry.getKey();
 			}
 		}
@@ -47,7 +47,7 @@ public class Shelter {
 			petDescription = getPet(aCage).getDescription();
 		}
 		return petDescription;
-	}
+	} 
 
 	public String getHunger(Cage aCage) {
 		String petHunger = "";
@@ -86,7 +86,6 @@ public class Shelter {
 	}
 
 	public void intake(Cage aCage, String name, String description, int hunger, int thirst, int boredom) {
-		// check for duplicate names
 		Pet intakePet = new Pet(name, description, hunger, thirst, boredom);
 		shelterMap.put(aCage, intakePet);
 	}
@@ -113,18 +112,14 @@ public class Shelter {
 	}
 
 	public void feedAll() {
-		for (Pet aPet : shelterMap.values()) {
-			if (aPet != null) {
+		for (Pet aPet : shelterMap.values()) {	
 				aPet.feed();
-			}
 		}
 	}
 
 	public void waterAll() {
 		for (Pet aPet : shelterMap.values()) {
-			if (aPet != null) {
 				aPet.water();
-			}
 		}
 	}
 

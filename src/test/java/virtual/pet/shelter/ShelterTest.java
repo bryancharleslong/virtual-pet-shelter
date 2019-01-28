@@ -111,32 +111,32 @@ public class ShelterTest {
 	}
 
 	@Test
-	public void tickAllShouldIncreaseAllHungerBy3() {
+	public void tickAllShouldIncreaseAllHungerBy2() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 10, 11, 12);
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 14, 15);
 		shelterUnderTest.tickAll();
-		assertEquals("13", shelterUnderTest.getHunger(cageA));
-		assertEquals("16", shelterUnderTest.getHunger(cageB));
+		assertEquals("12", shelterUnderTest.getHunger(cageA));
+		assertEquals("15", shelterUnderTest.getHunger(cageB));
 	}
 
 	@Test
-	public void tickAllShouldIncreaseAllThirstBy3() {
+	public void tickAllShouldIncreaseAllThirstBy2() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 10, 11, 12);
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 14, 15);
 		shelterUnderTest.tickAll();
-		assertEquals("14", shelterUnderTest.getThirst(cageA));
-		assertEquals("17", shelterUnderTest.getThirst(cageB));
+		assertEquals("13", shelterUnderTest.getThirst(cageA));
+		assertEquals("16", shelterUnderTest.getThirst(cageB));
 	}
 
 	@Test 
-	public void tickAllShouldIncreaseBoredomInCageABCby15or10or5() {
+	public void tickAllShouldIncreaseBoredomInCageABCby10or6or3() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 10, 11, 12);
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 14, 15);
 		shelterUnderTest.intake(cageC, "namec", "descriptionc", 16, 17, 18);
 		shelterUnderTest.tickAll();
-		assertEquals("27", shelterUnderTest.getBoredom(cageA));
-		assertEquals("25", shelterUnderTest.getBoredom(cageB));
-		assertEquals("23", shelterUnderTest.getBoredom(cageC));
+		assertEquals("22", shelterUnderTest.getBoredom(cageA));
+		assertEquals("21", shelterUnderTest.getBoredom(cageB));
+		assertEquals("21", shelterUnderTest.getBoredom(cageC));
 	}
 
 	@Test
@@ -175,6 +175,13 @@ public class ShelterTest {
 	}
 	
 	@Test
+	public void feedAllShouldDecreaseHungerToMinimum0() {
+		shelterUnderTest.intake(cageA, "namea", "descriptiona", 5, 11, 12);
+		shelterUnderTest.feedAll();
+		assertEquals("0",shelterUnderTest.getHunger(cageA));
+	}
+	
+	@Test
 	public void waterAllShouldDecreaseAllThirstBy10() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 80, 11, 12);
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 50, 15);
@@ -183,24 +190,31 @@ public class ShelterTest {
 		assertEquals(1,shelterUnderTest.getPet(cageA).getThirst());
 		assertEquals(40,shelterUnderTest.getPet(cageB).getThirst());
 		assertEquals(7,shelterUnderTest.getPet(cageC).getThirst());
+	} 
+	
+	@Test
+	public void waterAllShouldDecreaseHungerToMinimum0() {
+		shelterUnderTest.intake(cageA, "namea", "descriptiona", 50, 1, 12);
+		shelterUnderTest.waterAll();
+		assertEquals("0",shelterUnderTest.getThirst(cageA));
 	}
 	
 	@Test
 	public void playWillDecreaseBoredomBy12IfNotHungryOrThirsty() {
-		shelterUnderTest.intake(cageC, "namec", "descriptionc", 16, 17, 18);
+		shelterUnderTest.intake(cageC, "namec", "descriptionc", 16, 17, 40);
 		String testMessage = shelterUnderTest.getPet(cageC).play();
-		assertEquals(6,shelterUnderTest.getPet(cageC).getBoredom());
+		assertEquals(15,shelterUnderTest.getPet(cageC).getBoredom());
 		assertTrue(testMessage.contains("great time"));
 	}
 	
 	@Test
-	public void playWillDecreaseBoredomBy6IfHungryOrThirsty() {
+	public void playWillDecreaseBoredomBy15IfHungryOrThirsty() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 55, 10, 20);
-		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 50, 15);
+		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 23, 50, 15);
 		shelterUnderTest.getPet(cageA).play();
 		String testMessage = shelterUnderTest.getPet(cageB).play();
-		assertEquals(14,shelterUnderTest.getPet(cageA).getBoredom());
-		assertEquals(9,shelterUnderTest.getPet(cageB).getBoredom());
+		assertEquals(5,shelterUnderTest.getPet(cageA).getBoredom());
+		assertEquals(0,shelterUnderTest.getPet(cageB).getBoredom());
 		assertTrue(testMessage.contains("distracted"));
 	}
 	
