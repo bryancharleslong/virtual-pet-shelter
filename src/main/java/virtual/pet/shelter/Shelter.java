@@ -1,6 +1,6 @@
 package virtual.pet.shelter;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -68,16 +68,10 @@ public class Shelter {
 
 	HashMap<Cage, Pet> shelterMap = new HashMap<>();
 
-	public ArrayList<Pet> petList() {
-		ArrayList<Pet> petList = new ArrayList<>();
-		for (Pet aPet : shelterMap.values()) {
-			if (aPet != null) {
-				petList.add(aPet);
-			}
-		}
-		return petList;
+	public Collection<Pet> petList() {
+	return shelterMap.values();
 	}
-
+	
 	public void intake(Cage aCage, String name, String description, int hunger, int thirst, int boredom) {
 		Pet intakePet = new Pet(name, description, hunger, thirst, boredom);
 		shelterMap.put(aCage, intakePet);

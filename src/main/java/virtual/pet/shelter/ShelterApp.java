@@ -1,6 +1,6 @@
 package virtual.pet.shelter;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class ShelterApp {
@@ -57,30 +57,30 @@ public class ShelterApp {
 					if (myShelter.getPet(cageC) != null) {
 						System.out.println("Cage [C]: [" + myShelter.getName(cageC).trim() + "]");
 					}
-					if (myShelter.getPet(cageC) != null) {
+					if (myShelter.getPet(cageD) != null) {
 						System.out.println("Cage [D]: [" + myShelter.getName(cageD).trim() + "]");
 					}
 					if (myShelter.getPet(cageE) != null) {
 						System.out.println("Cage [E]: [" + myShelter.getName(cageE).trim() + "]");
 					}
 					menuChoice = input.nextLine();
-					if (menuChoice.equalsIgnoreCase("A")
+					if ((menuChoice.equalsIgnoreCase("A") && myShelter.getPet(cageA) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageA).trim())) {
 						myShelter.adoption(cageA);
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("B")
+					} else if ((menuChoice.equalsIgnoreCase("B") && myShelter.getPet(cageB) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageB).trim())) {
 						myShelter.adoption(cageB);
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("C")
+					} else if ((menuChoice.equalsIgnoreCase("C") && myShelter.getPet(cageC) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageC).trim())) {
 						myShelter.adoption(cageC);
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("D")
+					} else if ((menuChoice.equalsIgnoreCase("D") && myShelter.getPet(cageD) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageD).trim())) {
 						myShelter.adoption(cageD);
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("E")
+					} else if ((menuChoice.equalsIgnoreCase("E") && myShelter.getPet(cageE) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageE).trim())) {
 						myShelter.adoption(cageE);
 						exitMenu = true;
@@ -174,23 +174,23 @@ public class ShelterApp {
 						System.out.println("Cage [E]: [" + myShelter.getName(cageE).trim() + "]");
 					}
 					menuChoice = input.nextLine();
-					if (menuChoice.equalsIgnoreCase("A")
+					if ((menuChoice.equalsIgnoreCase("A") && myShelter.getPet(cageA) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageA).trim())) {
 						oldCage = cageA;
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("B")
+					} else if ((menuChoice.equalsIgnoreCase("B") && myShelter.getPet(cageB) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageB).trim())) {
 						oldCage = cageB;
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("C")
+					} else if ((menuChoice.equalsIgnoreCase("C") && myShelter.getPet(cageC) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageC).trim())) {
 						oldCage = cageC;
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("D")
+					} else if ((menuChoice.equalsIgnoreCase("D") && myShelter.getPet(cageD) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageD).trim())) {
 						oldCage = cageD;
 						exitMenu = true;
-					} else if (menuChoice.equalsIgnoreCase("E")
+					} else if ((menuChoice.equalsIgnoreCase("E") && myShelter.getPet(cageE) != null)
 							|| menuChoice.equalsIgnoreCase(myShelter.getName(cageE).trim())) {
 						oldCage = cageE;
 						exitMenu = true;
@@ -238,9 +238,7 @@ public class ShelterApp {
 							myShelter.moveCage(oldCage, cageE);
 							exitMenu = true;
 						}
-
 					} while (!exitMenu);
-
 				}
 			}
 
@@ -255,7 +253,7 @@ public class ShelterApp {
 			}
 
 			if (menuChoice.contentEquals("6") || menuChoice.equalsIgnoreCase("play")) {
-				ArrayList<Pet> petList = myShelter.petList();
+				Collection<Pet> petList = myShelter.petList();
 				if (petList.size() == 0) {
 					System.out.println("There are no pets to play with.");
 					exitMenu = true;
@@ -263,20 +261,21 @@ public class ShelterApp {
 					do {
 						System.out.println("Which pet would you like to play with?");
 						for (Pet aPet : petList) {
-							System.out.println("[" + aPet.getName().trim() + "] " + aPet.getDescription());
+							if (aPet != null) {
+								System.out.println("[" + aPet.getName().trim() + "] " + aPet.getDescription());
+							}
 						}
 						menuChoice = input.nextLine();
 
 						if (myShelter.getPet(menuChoice) != null) {
-							System.out.println(
-									myShelter.getPet(menuChoice).getName().trim() + myShelter.getPet(menuChoice).play());
+							System.out.println(myShelter.getPet(menuChoice).getName().trim()
+									+ myShelter.getPet(menuChoice).play());
 							exitMenu = true;
 						}
-
 					} while (!exitMenu);
 				}
-
 			}
+
 			if (menuChoice.equals("7") || menuChoice.equalsIgnoreCase("clean")) {
 				do {
 					System.out.println("Which cage would you like to clean?");

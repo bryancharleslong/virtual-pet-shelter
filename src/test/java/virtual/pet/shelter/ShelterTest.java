@@ -1,10 +1,12 @@
 package virtual.pet.shelter;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 import org.junit.Test;
 
@@ -248,14 +250,10 @@ public class ShelterTest {
 	}
 	
 	@Test
-	public void petListReturnsArrayListOfPets() {
+	public void petListReturnsCollectionOfPetsOfSize2() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 75, 10, 20);
 		shelterUnderTest.intake(cageB, "nameb", "descriptionb", 13, 80, 15);
-		ArrayList<Pet> testList = new ArrayList<>();
-		testList = shelterUnderTest.petList();
-		ArrayList<Pet> petList = new ArrayList<>();
-		petList.add(shelterUnderTest.getPet(cageB));
-		petList.add(shelterUnderTest.getPet(cageA));
-		assertEquals(petList,testList);
+		Collection<Pet> testList = shelterUnderTest.petList();
+		assertThat(testList.size(), is (2));
 	}
 }
