@@ -6,29 +6,6 @@ import java.util.Map.Entry;
 
 public class Shelter {
 
-	public Pet getPet(Cage aCage) {
-		return shelterMap.get(aCage);
-	}
-
-	public Pet getPet(String petName) {
-		Pet returnPet = null;
-		for(Pet aPet:shelterMap.values()) {
-			if(aPet.getName().trim().equalsIgnoreCase(petName)) {
-				returnPet = aPet;
-			}
-		}return returnPet;
-	}
-
-	public Cage getCage(String petName) {
-		Cage aCage = null;
-		for (Entry<Cage, Pet> entry : shelterMap.entrySet()) {
-			if (entry.getValue().getName().trim().equalsIgnoreCase(petName)) {
-				aCage = entry.getKey();
-			}
-		}
-		return aCage;
-	}
-
 	public int getDirty(Cage aCage) {
 		return aCage.getDirty();
 	}
@@ -47,7 +24,7 @@ public class Shelter {
 			petDescription = getPet(aCage).getDescription();
 		}
 		return petDescription;
-	} 
+	}
 
 	public String getHunger(Cage aCage) {
 		String petHunger = "";
@@ -73,12 +50,28 @@ public class Shelter {
 		return petBoredom;
 	}
 
+	public Pet getPet(Cage aCage) {
+		return shelterMap.get(aCage);
+	}
+
+	public Pet getPet(String petName) {
+		Pet returnPet = null;
+		for (Pet aPet : shelterMap.values()) {
+			if (aPet != null) {
+				if (aPet.getName().trim().equalsIgnoreCase(petName)) {
+					returnPet = aPet;
+				}
+			}
+		}
+		return returnPet;
+	}
+
 	HashMap<Cage, Pet> shelterMap = new HashMap<>();
 
 	public ArrayList<Pet> petList() {
 		ArrayList<Pet> petList = new ArrayList<>();
-		for(Pet aPet:shelterMap.values()) {
-			if(aPet!=null){
+		for (Pet aPet : shelterMap.values()) {
+			if (aPet != null) {
 				petList.add(aPet);
 			}
 		}
@@ -103,28 +96,33 @@ public class Shelter {
 	public void tickAll() {
 		// tickAll once at start of App to initialize descriptions
 		for (Entry<Cage, Pet> entry : shelterMap.entrySet()) {
-			if (entry.getValue() != null) {
-				entry.getValue().tick(entry.getKey().getDirty());
-				entry.getKey().tick();
+			Cage aCage = entry.getKey();
+			Pet aPet = entry.getValue();
+			if (aPet != null) {
+				entry.getValue().tick(aCage.getDirty());
+				aCage.tick();
 			}
 		}
-
 	}
 
 	public void feedAll() {
-		for (Pet aPet : shelterMap.values()) {	
+		for (Pet aPet : shelterMap.values()) {
+			if (aPet != null) {
 				aPet.feed();
+			}
 		}
 	}
 
 	public void waterAll() {
 		for (Pet aPet : shelterMap.values()) {
+			if (aPet != null) {
 				aPet.water();
+			}
 		}
 	}
 
 	public String clean(Cage aCage) {
-		String cleanMessage = "error";
+		String cleanMessage = "";
 		if (shelterMap.get(aCage) == null) {
 			cleanMessage = aCage.clean(false);
 		} else {
@@ -133,5 +131,4 @@ public class Shelter {
 		return cleanMessage;
 	}
 
-	
 }

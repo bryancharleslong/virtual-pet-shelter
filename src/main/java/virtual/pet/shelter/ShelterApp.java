@@ -42,8 +42,8 @@ public class ShelterApp {
 			System.out.println("[6]. [Play] with a pet");
 			System.out.println("[7]. [Clean] a cage");
 			System.out.println("[8]. [Quit]");
-			boolean exitMenu = false;
 			menuChoice = input.nextLine();
+			boolean exitMenu = false;
 
 			if (menuChoice.equals("1") || menuChoice.equalsIgnoreCase("adopt")) {
 				do {
@@ -121,7 +121,7 @@ public class ShelterApp {
 								|| intakeName.trim().equalsIgnoreCase(myShelter.getName(cageE).trim())) {
 							System.out.println("Choose a pet name not already used.");
 						} else {
-							// extra spaces stored in name for menu formatting
+							// extra spaces stored in name for console menu formatting
 							// trim() is used when retrieving names
 							while (intakeName.length() <= 6) {
 								intakeName = intakeName + " ";

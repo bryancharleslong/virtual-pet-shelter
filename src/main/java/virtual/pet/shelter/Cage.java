@@ -16,7 +16,7 @@ public class Cage {
 		dirty += 5;
 	}
 
-	public String clean(boolean isOccupied) {
+	public String clean(boolean isOccupied) { 
 		String cleanMessage = "error";
 		if (isOccupied) {
 			dirty-=23;

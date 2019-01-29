@@ -37,20 +37,6 @@ public class ShelterTest {
 	}
 
 	@Test
-	public void getCageShouldReturnCageAHousingPetName() {
-		shelterUnderTest.intake(cageA, "namea", "descriptiona", 10, 11, 12);
-		Cage testCage = shelterUnderTest.getCage("namea");
-		assertEquals(cageA, testCage);
-	}
-
-	@Test
-	public void getCageShouldReturnNullIfNameNotInCage() {
-		shelterUnderTest.intake(cageA, "namea", "descriptiona", 10, 11, 12);
-		Cage testCage = shelterUnderTest.getCage("nameX");
-		assertNull(testCage);
-	}
-
-	@Test
 	public void petAdoptionShouldRemovePetFromShelterMap() {
 		shelterUnderTest.intake(cageA, "namea", "descriptiona", 10, 11, 12);
 		shelterUnderTest.adoption(cageA);
